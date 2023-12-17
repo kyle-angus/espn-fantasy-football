@@ -3,8 +3,8 @@ package test
 import (
 	"testing"
 
-	espnclient "github.com/kyle-angus/espn-fantasy-football-client/cmd/espn_client"
 	"github.com/kyle-angus/espn-fantasy-football-client/pkg/config"
+	"github.com/kyle-angus/espn-fantasy-football-client/pkg/espnclient"
 	"github.com/stretchr/testify/assert"
 )
 
