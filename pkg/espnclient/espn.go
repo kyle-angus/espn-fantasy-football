@@ -85,3 +85,20 @@ func (c *EspnClient) GetTeams(season uint) ([]team.Team, error) {
 	}
 	return response.Teams, nil
 }
+
+func (c *EspnClient) GetTeam(season uint, teamId int) (*team.Team, error) {
+	response, err := c.getLeagueData(season)
+	if err != nil {
+		return nil, err
+	}
+
+	var team team.Team
+	for _, t := range response.Teams {
+		if t.Id == teamId {
+			team = t
+			break
+		}
+	}
+
+	return &team, nil
+}

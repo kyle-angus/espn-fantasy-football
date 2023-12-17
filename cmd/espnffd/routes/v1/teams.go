@@ -11,7 +11,10 @@ import (
 func GetTeams(ctx *gin.Context) {
 	season, err := strconv.ParseUint(ctx.Param("season"), 0, 64)
 	if err != nil {
-		ctx.String(http.StatusBadRequest, "Unable to parse season. Must be an int.")
+		ctx.JSON(http.StatusBadRequest, &gin.H{
+			"error":   err.Error(),
+			"message": "Unable to parse season",
+		})
 		return
 	}
 
@@ -51,9 +54,27 @@ func GetTeamById(ctx *gin.Context) {
 		return
 	}
 
+	espnClient := ctx.MustGet("espn").(espnclient.EspnClient)
+	team, err := espnClient.GetTeam(uint(season), int(id))
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, &gin.H{
+			"message": "Unable to get team",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	if team.Id == 0 {
+		ctx.JSON(http.StatusBadRequest, &gin.H{
+			"message": "Unable to find team by id",
+			"teamId":  id,
+		})
+		return
+	}
+
 	ctx.JSON(http.StatusOK, &gin.H{
 		"message": "Ok",
 		"season":  season,
-		"team":    id,
+		"team":    team,
 	})
 }
