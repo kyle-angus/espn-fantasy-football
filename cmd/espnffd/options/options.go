@@ -3,7 +3,7 @@ package options
 import "flag"
 
 type Options struct {
-	LeagueId string
+	LeagueId uint
 	EspnS2   string
 	SwID     string
 }
@@ -11,7 +11,7 @@ type Options struct {
 func New(args []string) *Options {
 	opts := Options{}
 
-	flag.StringVar(&opts.LeagueId, "league", "", "ESPN Fantasy Football League ID")
+	flag.UintVar(&opts.LeagueId, "league", 0, "ESPN Fantasy Football League ID")
 	flag.StringVar(&opts.EspnS2, "espns2", "", "ESPN Fantasy Football EpsnS2 Token")
 	flag.StringVar(&opts.SwID, "swid", "", "ESPN Fantasy Football SW ID Token")
 

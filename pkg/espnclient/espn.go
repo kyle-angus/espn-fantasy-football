@@ -7,8 +7,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/kyle-angus/espn-fantasy-football-client/pkg/config"
-	"github.com/kyle-angus/espn-fantasy-football-client/pkg/response"
+	r "github.com/kyle-angus/espn-fantasy-football-client/pkg/response"
 	"github.com/kyle-angus/espn-fantasy-football-client/pkg/team"
 )
 
@@ -17,68 +16,72 @@ const (
 )
 
 type EspnClient struct {
-	config *config.EspnConfig
+	LeagueId uint
+	EspnS2   string
+	SWID     string
 }
 
-func New(config *config.EspnConfig) *EspnClient {
-	if config == nil {
-		fmt.Println("config is nil")
-		return nil
-	}
-
-	if config.Season == 0 {
-		fmt.Println("season is empty")
-		return nil
-	}
-
-	if config.LeagueId == 0 {
+func New(leagueid uint, espns2 string, swid string) *EspnClient {
+	if leagueid == 0 {
 		fmt.Println("leagueId is empty")
 		return nil
 	}
 
-	if config.EspnS2 == "" {
+	if espns2 == "" {
 		fmt.Println("espns2 is empty")
 		return nil
 	}
 
-	if config.SWID == "" {
+	if swid == "" {
 		fmt.Println("swid is empty")
 		return nil
 	}
 
 	return &EspnClient{
-		config,
+		leagueid,
+		espns2,
+		swid,
 	}
 }
 
-func (c *EspnClient) GetLeagueData() response.EspnResponse {
-	api := BASE_URL + fmt.Sprintf("%d/segments/0/leagues/%d?view=modular&view=mNav&view=mMatchupScore&view=mScoreboard&view=mStatus&view=mSettings&view=mTeam&view=mPendingTransactions", c.config.Season, c.config.LeagueId)
+func (c *EspnClient) getLeagueData(season uint) (*r.EspnResponse, error) {
+	api := BASE_URL + fmt.Sprintf("%d/segments/0/leagues/%d?view=modular&view=mNav&view=mMatchupScore&view=mScoreboard&view=mStatus&view=mSettings&view=mTeam&view=mPendingTransactions", season, c.LeagueId)
 
 	request, err := http.NewRequest("GET", api, nil)
 	if err != nil {
-		log.Fatalf("Error: GetLeagueInfo: %s\n", err)
+		log.Printf("Error: GetLeagueInfo: %s\n", err)
+		return nil, err
 	}
-	request.Header.Add("Cookie", fmt.Sprintf("espn_s2=%s; SWID=%s;", c.config.EspnS2, c.config.SWID))
+	request.Header.Add("Cookie", fmt.Sprintf("espn_s2=%s; SWID=%s;", c.EspnS2, c.SWID))
 
 	client := &http.Client{}
 	res, err := client.Do(request)
 	if err != nil {
-		log.Fatalf("Error: GetLeagueInfo: %s\n", err)
+		log.Printf("Error: GetLeagueInfo: %s\n", err)
+		return nil, err
 	}
 	defer res.Body.Close()
 
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
-		log.Fatalf("Error: GetLeagueInfo: %s\n", err)
+		log.Printf("Error: GetLeagueInfo: %s\n", err)
+		return nil, err
 	}
 
-	var data response.EspnResponse
-	json.Unmarshal(body, &data)
+	var data r.EspnResponse
+	err = json.Unmarshal(body, &data)
+	if err != nil {
+		log.Printf("Error: GetLeagueInfo: %s\n", err)
+		return nil, err
+	}
 
-	return data
+	return &data, nil
 }
 
-func (c *EspnClient) GetTeams() []team.Team {
-	response := c.GetLeagueData()
-	return response.Teams
+func (c *EspnClient) GetTeams(season uint) ([]team.Team, error) {
+	response, err := c.getLeagueData(season)
+	if err != nil {
+		return nil, err
+	}
+	return response.Teams, nil
 }

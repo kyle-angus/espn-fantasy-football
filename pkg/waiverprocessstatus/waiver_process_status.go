@@ -1,5 +1,3 @@
 package waiverprocessstatus
 
-import "time"
-
-type WaiverProcessStatus map[time.Time]int
+type WaiverProcessStatus map[string]int

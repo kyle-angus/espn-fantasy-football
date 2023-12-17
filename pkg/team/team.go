@@ -2,6 +2,7 @@ package team
 
 import (
 	"github.com/kyle-angus/espn-fantasy-football-client/pkg/draftstrategy"
+	"github.com/kyle-angus/espn-fantasy-football-client/pkg/record"
 	"github.com/kyle-angus/espn-fantasy-football-client/pkg/tradeblock"
 	"github.com/kyle-angus/espn-fantasy-football-client/pkg/transactioncounter"
 )
@@ -25,9 +26,9 @@ type Team struct {
 	PrimaryOwner          string                                `json:"primaryOwner"`
 	RankCalculatedFinal   int                                   `json:"rankCalculatedFinal"`
 	RankFinal             int                                   `json:"rankFinal"`
-	Record                map[string]string                     `json:"record"`
+	Record                map[string]record.Record              `json:"record"`
 	TradeBlock            tradeblock.TradeBlock                 `json:"tradeBlock"`
 	TransactionCounter    transactioncounter.TransactionCounter `json:"transactionCounter"`
-	ValuesByStat          map[string]int                        `json:"valuesByStat"`
+	ValuesByStat          map[string]float32                    `json:"valuesByStat"`
 	WaiverRank            int                                   `json:"waiverRank"`
 }

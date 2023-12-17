@@ -16,7 +16,7 @@ func main() {
 		log.Fatalln("EspnS2 flag invalid")
 	}
 
-	if opts.LeagueId == "" {
+	if opts.LeagueId == 0 {
 		log.Fatalln("Espn leagueID flag invalid")
 	}
 
@@ -26,7 +26,7 @@ func main() {
 
 	log.Println("Starting ESPN Fantasy Football Daemon...")
 
-	r := routes.Setup()
+	r := routes.Setup(opts)
 	r.Run()
 
 	log.Println("ESPN Fantasy Football Daemon exiting...")

@@ -8,7 +8,7 @@ type TransactionCounter struct {
 	Misc                     int            `json:"misc"`
 	MoveToActive             int            `json:"moveToActive"`
 	MoveToIR                 int            `json:"moveToIR"`
-	Paid                     int            `json:"paid"`
-	TeamCharges              int            `json:"teamCharges"`
+	Paid                     float32        `json:"paid"`
+	TeamCharges              float32        `json:"teamCharges"`
 	Trades                   int            `json:"trades"`
 }

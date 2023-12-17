@@ -4,10 +4,12 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/kyle-angus/espn-fantasy-football-client/cmd/espnffd/options"
 	v1 "github.com/kyle-angus/espn-fantasy-football-client/cmd/espnffd/routes/v1"
+	"github.com/kyle-angus/espn-fantasy-football-client/pkg/espnclient"
 )
 
-func Setup() *gin.Engine {
+func Setup(opt *options.Options) *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
@@ -18,9 +20,15 @@ func Setup() *gin.Engine {
 		})
 	})
 
-	api := r.Group("/api/v1")
+	api := r.Group("/api/v1", EspnMiddleware(*espnclient.New(opt.LeagueId, opt.EspnS2, opt.SwID)))
 	api.GET("/:season/team", v1.GetTeams)
 	api.GET("/:season/team/:id", v1.GetTeamById)
 
 	return r
+}
+
+func EspnMiddleware(client espnclient.EspnClient) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		ctx.Set("espn", client)
+	}
 }

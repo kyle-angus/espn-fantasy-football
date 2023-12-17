@@ -5,7 +5,7 @@ type AcquisitionSettings struct {
 	AcquisitionLimit              int      `json:"acquisitionLimit"`
 	AcquisitionType               string   `json:"acquisitionType"` // @todo: appears to be an enum
 	IsUsingAcquisitionBudget      bool     `json:"isUsingAcquisitionBudget"`
-	MatchupAcquisitionLimit       int      `json:"matchupAcquisitionLimit"`
+	MatchupAcquisitionLimit       float32  `json:"matchupAcquisitionLimit"`
 	MatchupLimitPerScordingPeriod bool     `json:"matchupLimitPerScoringPeriod"`
 	MinimumBid                    int      `json:"minimumBid"`
 	WaiverHours                   int      `json:"waiverHours"`

@@ -1,12 +1,12 @@
 package financesettings
 
 type FinanceSettings struct {
-	EntryFee           int `json:"entryFee"`
-	MiscFee            int `json:"miscFee"`
-	PerLoss            int `json:"perLoss"`
-	PerTrade           int `json:"perTrade"`
-	PlayerAcquisition  int `json:"playerAcquisition"`
-	PlayerDrop         int `json:"playerDrop"`
-	PlayerMoveToActive int `json:"playerMoveToActive"`
-	PlayerMoveToIR     int `json:"playerMoveToIR"`
+	EntryFee           float32 `json:"entryFee"`
+	MiscFee            float32 `json:"miscFee"`
+	PerLoss            float32 `json:"perLoss"`
+	PerTrade           float32 `json:"perTrade"`
+	PlayerAcquisition  float32 `json:"playerAcquisition"`
+	PlayerDrop         float32 `json:"playerDrop"`
+	PlayerMoveToActive float32 `json:"playerMoveToActive"`
+	PlayerMoveToIR     float32 `json:"playerMoveToIR"`
 }

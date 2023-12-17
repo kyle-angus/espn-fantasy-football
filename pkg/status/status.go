@@ -1,15 +1,13 @@
 package status
 
 import (
-	"time"
-
 	"github.com/kyle-angus/espn-fantasy-football-client/pkg/creationinfo"
 	"github.com/kyle-angus/espn-fantasy-football-client/pkg/lastupdateinfo"
 	"github.com/kyle-angus/espn-fantasy-football-client/pkg/waiverprocessstatus"
 )
 
 type Status struct {
-	ActivatedDate            time.Time                               `json:"activatedDate"`
+	ActivatedDate            uint                                    `json:"activatedDate"`
 	CreatedAsLeagueType      int                                     `json:"createdAsLeagueType"`
 	CreationInfo             creationinfo.CreationInfo               `json:"creationInfo"`
 	CurrentLeagueType        int                                     `json:"currentLeagueType"`
@@ -26,9 +24,9 @@ type Status struct {
 	LastUpdateInfo           lastupdateinfo.LastUpdateInfo           `json:"lastUpdateInfo"`
 	LatestScoringPeriod      int                                     `json:"latestScoringPeriod"`
 	PreviousSeasons          []int                                   `json:"previousSeasons"`
-	StandingsUpdateDate      time.Time                               `json:"standingsUpdateDate"`
+	StandingsUpdateDate      uint                                    `json:"standingsUpdateDate"`
 	TeamsJoined              int                                     `json:"teamsJoined"`
 	TransactionScoringPeriod int                                     `json:"transactionScoringPeriod"`
-	WaiverLastExecutionDate  time.Time                               `json:"waiverLastExecutionDate"`
+	WaiverLastExecutionDate  uint                                    `json:"waiverLastExecutionDate"`
 	WaiverProcessStatus      waiverprocessstatus.WaiverProcessStatus `json:"waiverProcessStatus"`
 }

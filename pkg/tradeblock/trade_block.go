@@ -1,4 +1,3 @@
 package tradeblock
 
-// @todo: define TradeBlock
-type TradeBlock struct{}
+type TradeBlock map[string]map[string]string
