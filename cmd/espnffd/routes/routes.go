@@ -3,6 +3,7 @@ package routes
 import (
 	"net/http"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/kyle-angus/espn-fantasy-football-client/cmd/espnffd/options"
 	v1 "github.com/kyle-angus/espn-fantasy-football-client/cmd/espnffd/routes/v1"
@@ -13,6 +14,7 @@ func Setup(opt *options.Options) *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
+	r.Use(cors.Default())
 
 	r.GET("/health_check", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
