@@ -35,6 +35,42 @@ func GetMembers(ctx *gin.Context) {
 	})
 }
 
+func GetMemberById(ctx *gin.Context) {
+	season, err := strconv.ParseUint(ctx.Param("season"), 0, 64)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &gin.H{
+			"error":   err.Error(),
+			"message": "Unable to parse season",
+		})
+		return
+	}
+
+	id := ctx.Param("id")
+	espnclient := ctx.MustGet("espn").(espnclient.EspnClient)
+	member, err := espnclient.GetMember(uint(season), id)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, &gin.H{
+			"error":   err.Error(),
+			"message": "Unable to fetch member",
+		})
+		return
+	}
+
+	if member.Id == "" {
+		ctx.JSON(http.StatusBadRequest, &gin.H{
+			"message":  "Unable to find member by id",
+			"memberId": id,
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, &gin.H{
+		"message": "Ok",
+		"season":  season,
+		"member":  member,
+	})
+}
+
 func GetTeamByMemberId(ctx *gin.Context) {
 	season, err := strconv.ParseInt(ctx.Param("season"), 0, 64)
 	if err != nil {
@@ -45,6 +81,7 @@ func GetTeamByMemberId(ctx *gin.Context) {
 
 		return
 	}
+
 	id := ctx.Param("id")
 	espnclient := ctx.MustGet("espn").(espnclient.EspnClient)
 	team, err := espnclient.GetTeamByMemberId(uint(season), id)

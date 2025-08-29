@@ -26,6 +26,7 @@ func Setup(opt *options.Options) *gin.Engine {
 	api.GET("/:season/team", v1.GetTeams)
 	api.GET("/:season/team/:id", v1.GetTeamById)
 	api.GET("/:season/member", v1.GetMembers)
+	api.GET("/:season/member/:id", v1.GetMemberById)
 	api.GET("/:season/member/:id/team", v1.GetTeamByMemberId)
 
 	return r

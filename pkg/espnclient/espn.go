@@ -113,6 +113,22 @@ func (c *EspnClient) GetMembers(season uint) ([]member.Member, error) {
 	return response.Members, nil
 }
 
+func (c *EspnClient) GetMember(season uint, memberId string) (*member.Member, error) {
+	response, err := c.getLeagueData(season)
+	if err != nil {
+		return nil, err
+	}
+
+	var member member.Member
+	for _, m := range response.Members {
+		if m.Id == memberId {
+			member = m
+		}
+	}
+
+	return &member, nil
+}
+
 func (c *EspnClient) GetTeamByMemberId(season uint, memberId string) (*team.Team, error) {
 	response, err := c.getLeagueData(season)
 	if err != nil {
