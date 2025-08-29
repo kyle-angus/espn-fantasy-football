@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/kyle-angus/espn-fantasy-football-client/pkg/member"
 	r "github.com/kyle-angus/espn-fantasy-football-client/pkg/response"
 	"github.com/kyle-angus/espn-fantasy-football-client/pkg/team"
 )
@@ -95,6 +96,32 @@ func (c *EspnClient) GetTeam(season uint, teamId int) (*team.Team, error) {
 	var team team.Team
 	for _, t := range response.Teams {
 		if t.Id == teamId {
+			team = t
+			break
+		}
+	}
+
+	return &team, nil
+}
+
+func (c *EspnClient) GetMembers(season uint) ([]member.Member, error) {
+	response, err := c.getLeagueData(season)
+	if err != nil {
+		return nil, err
+	}
+
+	return response.Members, nil
+}
+
+func (c *EspnClient) GetTeamByMemberId(season uint, memberId string) (*team.Team, error) {
+	response, err := c.getLeagueData(season)
+	if err != nil {
+		return nil, err
+	}
+
+	var team team.Team
+	for _, t := range response.Teams {
+		if t.PrimaryOwner == memberId {
 			team = t
 			break
 		}
