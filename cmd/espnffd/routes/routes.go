@@ -25,6 +25,8 @@ func Setup(opt *options.Options) *gin.Engine {
 	api := r.Group("/api/v1", EspnMiddleware(*espnclient.New(opt.LeagueId, opt.EspnS2, opt.SwID)))
 	api.GET("/:season/team", v1.GetTeams)
 	api.GET("/:season/team/:id", v1.GetTeamById)
+	api.GET("/:season/member", v1.GetMembers)
+	api.GET("/:season/member/:id/team", v1.GetTeamByMemberId)
 
 	return r
 }
